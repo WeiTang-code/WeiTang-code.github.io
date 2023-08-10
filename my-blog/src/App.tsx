@@ -1,11 +1,16 @@
-import React from 'react';
+import React, {StrictMode} from 'react';
 import './App.css';
+import Header from "./components/Header";
+import Main from "./components/Main";
 
 function App() {
   return (
-      <div id="app">
-          <h1>唐唯的个人页面...</h1>
-      </div>
+      <StrictMode>
+          <div id="app">
+              <Header></Header>
+              <Main></Main>
+          </div>
+      </StrictMode>
   );
 }
 
