@@ -1,0 +1,2 @@
+"use strict";(self.webpackChunkmy_blog=self.webpackChunkmy_blog||[]).push([[450],{1450:function(n,e,t){t.r(e);var c,i=t(168),l=t(5867).ZP.div(c||(c=(0,i.Z)(["\n\n  background-color: #f1c6c6;\n  height: 50px;\n  width: 100%;\n  padding-left: 30px;\n  a {\n    display: flex;\n    //justify-content: center;\n    align-items: center;\n    width: 100%;\n    height: 100%;\n    text-decoration: none;\n    color: black;\n  }\n"])));e.default=l}}]);
+//# sourceMappingURL=450.aa121b63.chunk.js.map

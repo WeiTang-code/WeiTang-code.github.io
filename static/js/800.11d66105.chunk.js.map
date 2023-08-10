@@ -1,0 +1,1 @@
+{"version":3,"file":"static/js/800.11d66105.chunk.js","mappings":"mIAQA,UANc,WACV,OACIA,EAAAA,EAAAA,KAAA,MAAAC,SAAI,iBAEZ,C","sources":["views/Loading/index.tsx"],"sourcesContent":["import React from 'react';\r\n\r\nconst Index = () => {\r\n    return (\r\n        <h1>is loading...</h1>\r\n    );\r\n};\r\n\r\nexport default Index;"],"names":["_jsx","children"],"sourceRoot":""}
