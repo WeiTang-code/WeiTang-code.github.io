@@ -4,7 +4,7 @@ date: 2023-08-15 10:16:19
 tags:
 ---
 
-## call、apply、bind  
+## 1. call、apply、bind  
 ### call  
 - 核心在于理解this表示该函数，用Symbol()防止命名冲突
 ```javascript
@@ -21,6 +21,7 @@ Function.prototype.myCall = function(context = window, ...args) {
     return res
 }
 ```
+
 ### apply  
 - 基本和call一样，注意参数接收方式不同
 ```javascript
@@ -36,7 +37,8 @@ Function.prototype.myApply = function(context = window, args) {
     delete context[fnKey]
     return res
 }
-```  
+```
+
 ### bind  
 - 注意使用柯里化，不能立刻调用，这里我使用了箭头函数解决this的指向问题
 ```javascript
@@ -52,7 +54,8 @@ Function.prototype.myBind = function (context = window, ...args){
         return res
     }
 }
-```  
+```
+
 ### 测试用例
 ```javascript
 function fn(a,b){
@@ -68,4 +71,49 @@ const obj = {
 // fn.myApply(obj,[1,2])
 const tempFn = fn.myBind(obj,1,2)
 tempFn()
+```
+
+## 2. instanceof  
+- 要注意__proto__和prototype的区别
+```javascript
+function myInstanceOf (instance, target) {
+    if (typeof instance !== 'object' || instance==null) return false
+    let proto = instance.__proto__
+    while (proto) {
+        if (proto === target.prototype) {
+            return true
+        }
+        proto = proto.__proto__
+    }
+    return false
+}
+```
+
+### 测试用例  
+```javascript
+console.log(myInstanceOf({}, Array));
+console.log(myInstanceOf([], Array));
+console.log(myInstanceOf({}, Object));
+console.log(myInstanceOf(function (){}, Function));
+```
+
+## new  
+```javascript
+function myNew(constuctor, ...args) {
+    let newObj = Object.create(constuctor.prototype)
+    
+    let res = constuctor.apply(newObj, args)
+    return typeof res === 'object' ? res : newObj
+}
+```
+
+### 测试用例
+```javascript
+Person.prototype.say = function() {
+    console.log(this.age);
+};
+let p1 = myNew(Person, "poety", 18);
+console.log(p1.name);
+console.log(p1);
+p1.say();
 ```
