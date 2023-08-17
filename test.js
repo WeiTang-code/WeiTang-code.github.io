@@ -1,3 +1,10 @@
-const num = 1234567.123
+Promise.resolve().then(()=>{
+    console.log(1)
+})
 
-console.log(num.toLocaleString())
+setTimeout(()=>{
+    console.log(2)
+    Promise.resolve().then(()=>{
+        console.log(3)
+    })
+})

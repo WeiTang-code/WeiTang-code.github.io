@@ -10,8 +10,20 @@
 <body>
 
 <script>
-    console.log(Array.__proto__)
-    console.log(Array.prototype)
+    function interval() {
+        setTimeout(() => {
+            console.log(1)
+            interval()
+        }, 1000)
+    }
+
+    interval()
+
+    setInterval(() => {
+        console.log(2)
+    }, 1000)
+
+
 </script>
 </body>
 </html>
