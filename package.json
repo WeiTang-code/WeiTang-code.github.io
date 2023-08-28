@@ -9,7 +9,7 @@
     "server": "hexo server",
     "cleand": "hexo clean && hexo generate && hexo deploy",
     "d": "hexo generate && hexo deploy",
-    "git": "git add . && git commit -m 'feat: paper' && git push origin HEAD:hexo-d"
+    "git": "git add . && git commit -m \"feat: paper\" && git push origin HEAD:hexo-d"
   },
   "hexo": {
     "version": "6.3.0"
