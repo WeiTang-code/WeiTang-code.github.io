@@ -177,7 +177,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2023-08-30 15:21:17" itemprop="dateModified" datetime="2023-08-30T15:21:17+08:00">2023-08-30</time>
+                <time title="修改时间：2023-08-31 14:59:13" itemprop="dateModified" datetime="2023-08-31T14:59:13+08:00">2023-08-31</time>
               </span>
 
           
@@ -195,6 +195,8 @@
 <li>localStorage的存储空间有多少？<br>5M的字符长度或者10M的字节长度。</li>
 <li>replace()和replaceAll()的区别？<br>当两个方法传递的第一个参数都是正则表达式时，没有区别。<br>第一个参数为字符串时，replace只会替换匹配到的第一个位置，replaceAll会替换匹配到的每个地方</li>
 <li>字符如何实现大小写转换<br>法一： 通过toUpperCase()和toLowerCase()，注意，toLocaleUpperCase会根据地区来转换。<br>法二：通过Ascii： <code>str.charCodeAt()</code>,<code>String.fromCharCode()</code>，注意，a的ascii为97,A的Ascii为65，1的ascii为49</li>
+<li>Chrome浏览器的setInterval()函数存在最小执行时间，为0.4ms，setTimeOut()为1ms，因此如果setInterval时间设为0可能会导致意外情况（例如和<br>setTimeOut混用）。</li>
+<li>事件循环除了常规的宏任务，微任务，还要注意有一个交互任务队列，如果触发了交互任务，它会在下一轮的宏任务之前插队</li>
 </ol>
 
       
@@ -844,7 +846,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2023-08-28 11:38:07" itemprop="dateModified" datetime="2023-08-28T11:38:07+08:00">2023-08-28</time>
+                <time title="修改时间：2023-08-31 12:04:08" itemprop="dateModified" datetime="2023-08-31T12:04:08+08:00">2023-08-31</time>
               </span>
 
           
@@ -928,6 +930,13 @@
 <li>preload 资源在当前页面使用，会优先加载</li>
 <li>prefetch 资源在未来页面使用，空闲时加载</li>
 </ul>
+<h2 id="浏览器进程"><a href="#浏览器进程" class="headerlink" title="浏览器进程"></a>浏览器进程</h2><p>浏览器中，最主要的进程有：</p>
+<ol>
+<li>浏览器进程<br>主要负责界面显示、用户交互、子进程管理等。浏览器进程内部会启动多个线程处理不同的任务。</li>
+<li>网络进程<br>负责加载网络资源。网络进程内部会启动多个线程来处理不同的网络任务。</li>
+<li>渲染进程<br>渲染进程启动后，会开启一个<strong>渲染主线程</strong>，主线程负责执行HTML、CSS、JS代码。<br>默认情况下，浏览器会为每个标签页开启一个新的渲染进程，以保证不同的标签页之间不相互影响。</li>
+</ol>
+<p>补充知识： 目前的浏览器想改变这种渲染进程模式，因为每个Tab开一个进程资源消耗太大了。（目前谷歌文档说同一个域名下的网页作为一个进程）</p>
 
       
     </div>
