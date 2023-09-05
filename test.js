@@ -1,9 +1,6 @@
-const obj = {};
-Object.defineProperties(obj, {
-    property: {enumerable: false, value: 2}
-});
+class Person {
 
-const sKey = Symbol('a')
-obj[sKey] = 'a'
+    getName = () => {
 
-console.log(Reflect.ownKeys(obj))
+    }
+}

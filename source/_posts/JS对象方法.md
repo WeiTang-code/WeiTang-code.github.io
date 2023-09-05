@@ -16,7 +16,7 @@ tags:
 - 两种方法都**不能**遍历`Symbol`属性。
 - `keys`只能遍历可枚举属性。`GetOwnPropertyNames`可以遍历可枚举属性和不可枚举属性。
 
-举例：  
+举例：
 ```javascript
 const obj = {};
 Object.defineProperties(obj, {
@@ -26,7 +26,7 @@ Object.defineProperties(obj, {
 
 console.log(Object.keys(obj)); //> Array ["property1"]
 console.log(Object.getOwnPropertyNames(obj)); //> Array ["property1", "property2"]
-```  
+```
 
 ## 2. 如何判断对象为空？  
 我们可能会想到利用如下方法来判断
@@ -43,7 +43,7 @@ console.log(Object.getOwnPropertyNames(obj)); //> Array ["property1", "property2
 function isEmpty(obj) {
     return Reflect.ownKeys(obj).length === 0
 }
-```  
+```
 举例
 ```javascript
 const obj = {};
@@ -54,6 +54,5 @@ Object.defineProperties(obj, {
 const sKey = Symbol('a')
 obj[sKey] = 'a'
 
-console.log(Reflect.ownKeys(obj)) // [ 'property2', Symbol(a) ]
-
+console.log(Reflect.ownKeys(obj)) // [ 'property', Symbol(a) ]
 ```

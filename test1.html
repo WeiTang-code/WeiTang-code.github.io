@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+</head>
+<body>
+<button id="begin">延时</button>
+<button id="interaction">交互</button>
+<ul>
+    <li>Lorem ipsum dolor sit.</li>
+    <li>Iusto minus nesciunt similique.</li>
+    <li>Beatae modi nesciunt non!</li>
+    <li>Animi eos quisquam rerum.</li>
+    <li>Ad neque officia sapiente?</li>
+    <li>Id ipsa obcaecati quasi.</li>
+    <li>Debitis fugiat magni numquam.</li>
+    <li>Ipsa reprehenderit repudiandae voluptatibus!</li>
+    <li>Necessitatibus nesciunt officia officiis?</li>
+    <li>Blanditiis dolorum iste perspiciatis?</li>
+    <li>Nemo odit praesentium sit!</li>
+    <li>Animi dolor laudantium minima.</li>
+    <li>Distinctio hic laborum rem.</li>
+    <li>Autem cum eveniet odio!</li>
+    <li>Accusamus distinctio eligendi magnam?</li>
+    <li>Aperiam doloremque eaque repellat.</li>
+    <li>Illo illum in incidunt?</li>
+    <li>Illo iure quis sed?</li>
+    <li>Accusantium alias delectus nostrum.</li>
+    <li>Aperiam consequatur nisi numquam!</li>
+    <li>Dignissimos fuga incidunt iusto.</li>
+    <li>Itaque quis repellat sapiente.</li>
+    <li>Blanditiis maiores, velit. Pariatur!</li>
+    <li>Itaque molestias tempora voluptas!</li>
+    <li>Cum dicta facilis omnis?</li>
+    <li>Dolorem incidunt molestiae quo.</li>
+    <li>Aspernatur ex facilis quidem.</li>
+    <li>At distinctio fugiat nisi!</li>
+    <li>Praesentium qui saepe sint.</li>
+    <li>Dolorem hic incidunt provident?</li>
+</ul>
+<script>
+    function delay(duration) {
+        var start = Date.now();
+        while (Date.now() - start < duration) {}
+    }
+
+    function addDelay() {
+        console.log('1');
+        setTimeout(() => {
+            console.log('2');
+        }, 100);
+        delay(2000);
+    }
+
+    function addInteraction() {
+        console.log('3');
+        document.getElementById('interaction').onclick = function () {
+            console.log('4');
+        };
+        delay(2000);
+        console.log('5')
+    }
+
+    document.getElementById('begin').onclick = function () {
+        addDelay();
+        addInteraction();
+    };
+</script>
+</body>
+</html>

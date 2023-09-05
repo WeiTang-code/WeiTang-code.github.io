@@ -8,22 +8,66 @@
     <title>Document</title>
 </head>
 <body>
-
+<canvas></canvas>
 <script>
-    function interval() {
-        setTimeout(() => {
-            console.log(1)
-            interval()
-        }, 1000)
+    const cvs = document.querySelector('canvas')
+    const ctx = cvs.getContext('2d')
+
+    function init(){
+        cvs.width = window.innerWidth
+        cvs.height = window.innerHeight
     }
 
-    interval()
+    init()
 
-    setInterval(() => {
-        console.log(2)
-    }, 1000)
+    function getRandom(min, max) {
+        return Math.floor(Math.random() * (max + 1 - min) + min)
+    }
 
+    class Point {
+        constructor() {
+            this.r = 6
+            this.x = getRandom(0, cvs.width - this.r / 2)
+            this.y = getRandom(0, cvs.height - this.r / 2)
+        }
+
+        draw(){
+            ctx.beginPath()
+            // ctx.moveTo(100, 50)
+            ctx.arc(this.x, this.y, 6, 0, Math.PI *2)
+            ctx.fill()
+        }
+    }
+
+    const p1 = new Point()
+    const p2 = new Point()
+    p1.draw()
+    p2.draw()
+
+    // ctx.beginPath()
+    // ctx.moveTo(100, 50)
+    // ctx.lineTo(200, 100)
+    // ctx.lineTo(300, 300)
+    // ctx.closePath()
+
+    // ctx.strokeStyle = 'black'
+    // ctx.stroke()
+    // // ctx.fill()
+    //
+    //
+    //
+    // ctx.beginPath()
+    // ctx.arc(300, 300, 6, 0, Math.PI *2)
+    // ctx.fill()
 
 </script>
 </body>
+<style>
+* {
+    margin: 0;
+    padding: 0;
+}
+</style>
+<script>
+</script>
 </html>
