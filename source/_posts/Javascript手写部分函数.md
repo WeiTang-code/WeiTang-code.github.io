@@ -56,7 +56,7 @@ Function.prototype.myBind = function (context = window, ...args){
 }
 ```
 
-### 测试用例
+测试用例
 ```javascript
 function fn(a,b){
     console.log(a+b)
@@ -89,7 +89,7 @@ function myInstanceOf (instance, target) {
 }
 ```
 
-### 测试用例  
+测试用例  
 ```javascript
 console.log(myInstanceOf({}, Array));
 console.log(myInstanceOf([], Array));
@@ -107,7 +107,7 @@ function myNew(constuctor, ...args) {
 }
 ```
 
-### 测试用例
+测试用例
 ```javascript
 Person.prototype.say = function() {
     console.log(this.age);
@@ -229,7 +229,7 @@ class MyPromise {
     }
 }
 ```
-### 测试用例  
+测试用例  
 ```javascript
 const pro = new MyPromise((_resolve, _reject)=>{
     _resolve('123')
@@ -370,7 +370,7 @@ class MyPromise {
     }
 }
 ```
-### 测试用例  
+测试用例  
 如果手写的Promise通过了A+规范，则可以和原生Promise相互调用
 ```javascript
 const pro1 = new MyPromise((resolve, reject) => {
@@ -479,4 +479,117 @@ Promise.myAll = function (iterator) {
         }
     })
 }
+```
+测试用例
+```javascript
+const promise1 = Promise.resolve(3);
+const promise2 = 42;
+const promise3 = new Promise((resolve, reject) => {
+    setTimeout(resolve, 100, 'foo');
+    // reject('fail')
+});
+const promise4 = 6
+
+Promise.myAll([promise1, promise2, promise3, promise4]).then((values) => {
+    console.log(values);
+}).catch((e) => {
+    console.log('失败',e)
+})
+```
+### Promise.allSettled( )
+有如下两种方式
+```javascript
+/**
+ * 等待所有的Promise有结果之后
+ * 该方法返回的Promise完成
+ * 并且按照顺序将所有结果汇总
+ */
+Promise.myAllSettled = function (iterator) {
+    return new Promise((resolve, reject) => {
+        const ps = []
+        let count = 0
+        let doneCount = 0
+        for (const p of iterator) {
+            let i = count
+            count++
+            Promise.resolve(p).then((res) => ({
+                status: 'fulfilled',
+                value: res
+            }), err => ({
+                status: 'rejected',
+                value: err
+            })).then(res => {
+                ps[i] = res
+                doneCount++
+                if (doneCount === count) {
+                    resolve(ps)
+                }
+            })
+        }
+    })
+}
+```
+可以利用all，实现更加简洁
+```javascript
+Promise.myAllSettled2 = function (iterator) {
+    const ps = []
+    for (const p of iterator) {
+        ps.push(Promise.resolve(p).then(res => ({
+            status: 'fulfilled',
+            value: res
+        }), err => ({
+            status: 'rejected',
+            value: err
+        })))
+    }
+    return Promise.all(ps)
+}
+```
+测试用例
+````javascript
+const promise1 = Promise.resolve(3);
+const promise2 = 42;
+const promise3 = new Promise((resolve, reject) => {
+    // setTimeout(resolve, 1000, 'foo');
+    reject('fail')
+});
+const promise4 = 6
+
+
+Promise.myAllSettled2([promise1, promise2, promise3, promise4]).then((res) => {
+    console.log(res)
+})
+````
+### Promise.race( )  
+注意外层的Promise只认第一次完成时的状态
+```javascript
+Promise.myRace = function (iterator) {
+    return new Promise((resolve, reject) => {
+        for (const pro of iterator) {
+            Promise.resolve(pro).then(resolve, reject)
+        }
+    })
+}
+```
+用例
+```javascript
+const pro1 = new Promise((resolve, reject) => {
+    setTimeout(() => {
+        resolve(1)
+    }, 1000)
+})
+
+const pro2 = new Promise((resolve, reject) => {
+    setTimeout(() => {
+        reject(2)
+    }, 500)
+})
+
+Promise
+    .myRace([pro1, pro2])
+    .then((res) => {
+        console.log(res)
+    },err=>{
+        console.log(err,'失败')
+    })
 ```
