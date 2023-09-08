@@ -21,19 +21,20 @@
     var CONFIG = {"hostname":"example.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta name="description" content="localStorage的存储空间有多少？5M的字符长度或者10M的字节长度。 replace()和replaceAll()的区别？当两个方法传递的第一个参数都是正则表达式时，没有区别。第一个参数为字符串时，replace只会替换匹配到的第一个位置，replaceAll会替换匹配到的每个地方 字符如何实现大小写转换法一： 通过toUpperCase()和toLowerCase()，注意，toLo">
+  <meta name="description" content="设计模式的原则 S - 单一职责原则 - Single Responsibility Principle   一个程序做好一件事 功能太负责就拆分，每个部分保持独立   O - 开放&#x2F;封闭原则 对扩展开放，对修改封闭   高内聚、低耦合  设计模式的分类单例模式一个类只有一个实例，并提供一个访问它的全局站点 1234567891011121314151617181920212223cla">
 <meta property="og:type" content="article">
-<meta property="og:title" content="前端细节汇总">
-<meta property="og:url" content="http://example.com/2023/08/29/%E5%89%8D%E7%AB%AF%E7%BB%86%E8%8A%82%E6%B1%87%E6%80%BB/index.html">
+<meta property="og:title" content="JS设计模式">
+<meta property="og:url" content="http://example.com/2023/09/08/JS%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/index.html">
 <meta property="og:site_name" content="唐唯的博客">
-<meta property="og:description" content="localStorage的存储空间有多少？5M的字符长度或者10M的字节长度。 replace()和replaceAll()的区别？当两个方法传递的第一个参数都是正则表达式时，没有区别。第一个参数为字符串时，replace只会替换匹配到的第一个位置，replaceAll会替换匹配到的每个地方 字符如何实现大小写转换法一： 通过toUpperCase()和toLowerCase()，注意，toLo">
+<meta property="og:description" content="设计模式的原则 S - 单一职责原则 - Single Responsibility Principle   一个程序做好一件事 功能太负责就拆分，每个部分保持独立   O - 开放&#x2F;封闭原则 对扩展开放，对修改封闭   高内聚、低耦合  设计模式的分类单例模式一个类只有一个实例，并提供一个访问它的全局站点 1234567891011121314151617181920212223cla">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2023-08-29T05:43:25.000Z">
-<meta property="article:modified_time" content="2023-09-01T03:31:53.589Z">
+<meta property="article:published_time" content="2023-09-08T07:24:28.000Z">
+<meta property="article:modified_time" content="2023-09-08T07:56:28.747Z">
 <meta property="article:author" content="Wei Tang">
+<meta property="article:tag" content="设计模式">
 <meta name="twitter:card" content="summary">
 
-<link rel="canonical" href="http://example.com/2023/08/29/%E5%89%8D%E7%AB%AF%E7%BB%86%E8%8A%82%E6%B1%87%E6%80%BB/">
+<link rel="canonical" href="http://example.com/2023/09/08/JS%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">
 
 
 <script id="page-configurations">
@@ -46,7 +47,7 @@
   };
 </script>
 
-  <title>前端细节汇总 | 唐唯的博客</title>
+  <title>JS设计模式 | 唐唯的博客</title>
   
 
 
@@ -151,7 +152,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2023/08/29/%E5%89%8D%E7%AB%AF%E7%BB%86%E8%8A%82%E6%B1%87%E6%80%BB/">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2023/09/08/JS%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -164,7 +165,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          前端细节汇总
+          JS设计模式
         </h1>
 
         <div class="post-meta">
@@ -173,16 +174,10 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
+              
 
-              <time title="创建时间：2023-08-29 13:43:25" itemprop="dateCreated datePublished" datetime="2023-08-29T13:43:25+08:00">2023-08-29</time>
+              <time title="创建时间：2023-09-08 15:24:28 / 修改时间：15:56:28" itemprop="dateCreated datePublished" datetime="2023-09-08T15:24:28+08:00">2023-09-08</time>
             </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2023-09-01 11:31:53" itemprop="dateModified" datetime="2023-09-01T11:31:53+08:00">2023-09-01</time>
-              </span>
 
           
             <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
@@ -202,14 +197,30 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <ol>
-<li>localStorage的存储空间有多少？<br>5M的字符长度或者10M的字节长度。</li>
-<li>replace()和replaceAll()的区别？<br>当两个方法传递的第一个参数都是正则表达式时，没有区别。<br>第一个参数为字符串时，replace只会替换匹配到的第一个位置，replaceAll会替换匹配到的每个地方</li>
-<li>字符如何实现大小写转换<br>法一： 通过toUpperCase()和toLowerCase()，注意，toLocaleUpperCase会根据地区来转换。<br>法二：通过Ascii： <code>str.charCodeAt()</code>,<code>String.fromCharCode()</code>，注意，a的ascii为97,A的Ascii为65，1的ascii为49</li>
-<li>Chrome浏览器的setInterval()函数存在最小执行时间，为0.4ms，setTimeOut()为1ms，因此如果setInterval时间设为0可能会导致意外情况（例如和<br>setTimeOut混用）。</li>
-<li>事件循环除了常规的宏任务，微任务，还要注意有一个交互任务队列，如果触发了交互任务，它会在下一轮的宏任务之前插队</li>
-<li>Vue-Router的history模式是通过html5的新特性，pushState()和replaceState()来实现的，可以改变url且不会发送请求。replaceState()可以读取历史记录栈，还可以对浏览器记录进行修改。</li>
-<li>innerHTML修改DOM节点是比createElement效率要低的，因为innerHTML需要解析的是一个字符串，而createElement相当于修改DOM树，效率更高。</li>
+        <h1 id="设计模式的原则"><a href="#设计模式的原则" class="headerlink" title="设计模式的原则"></a>设计模式的原则</h1><ul>
+<li>S - 单一职责原则 - Single Responsibility Principle  <ul>
+<li>一个程序做好一件事</li>
+<li>功能太负责就拆分，每个部分保持独立</li>
+</ul>
+</li>
+<li>O - 开放&#x2F;封闭原则<ul>
+<li>对扩展开放，对修改封闭</li>
+</ul>
+</li>
+<li>高内聚、低耦合</li>
+</ul>
+<h1 id="设计模式的分类"><a href="#设计模式的分类" class="headerlink" title="设计模式的分类"></a>设计模式的分类</h1><h2 id="单例模式"><a href="#单例模式" class="headerlink" title="单例模式"></a>单例模式</h2><p>一个类只有一个实例，并提供一个访问它的全局站点</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Danli</span> &#123;</span><br><span class="line">    <span class="title function_">constructor</span>(<span class="params"></span>) &#123;</span><br><span class="line">        <span class="variable language_">this</span>.<span class="property">state</span> = <span class="string">&#x27;true&#x27;</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="title function_">do</span>(<span class="params"></span>) &#123;</span><br><span class="line">        <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;do something&#x27;</span>)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="title class_">Danli</span>.<span class="property">getInstance</span> = (<span class="keyword">function</span> (<span class="params"></span>) &#123;</span><br><span class="line">    <span class="keyword">let</span> instance</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">function</span> (<span class="params"></span>) &#123;</span><br><span class="line">        <span class="keyword">if</span>(!instance) &#123;</span><br><span class="line">            instance = <span class="keyword">new</span> <span class="title class_">Danli</span>()</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> instance</span><br><span class="line">    &#125;</span><br><span class="line">&#125;)()</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> obj1 = <span class="title class_">Danli</span>.<span class="title function_">getInstance</span>()</span><br><span class="line"><span class="keyword">const</span> obj2 = <span class="title class_">Danli</span>.<span class="title function_">getInstance</span>()</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(obj1 === obj2)</span><br></pre></td></tr></table></figure>
+<p>优点：</p>
+<ol>
+<li>提供了对唯一实例的受控访问</li>
+<li>节约内存空间，无需频繁创建和销毁对象</li>
+<li>允许可变数目的实例</li>
+</ol>
+<p>缺点：</p>
+<ol>
+<li>单例类不利于扩展</li>
+<li>可能导致模块间的强耦合，从而不利于单元测试</li>
 </ol>
 
     </div>
@@ -219,6 +230,9 @@
     
 
       <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" rel="tag"># 设计模式</a>
+          </div>
 
         
 
@@ -226,13 +240,10 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2023/08/28/JS%E5%AF%B9%E8%B1%A1%E6%96%B9%E6%B3%95/" rel="prev" title="JS对象方法">
-      <i class="fa fa-chevron-left"></i> JS对象方法
+    <a href="/2023/08/29/%E5%89%8D%E7%AB%AF%E7%BB%86%E8%8A%82%E6%B1%87%E6%80%BB/" rel="prev" title="前端细节汇总">
+      <i class="fa fa-chevron-left"></i> 前端细节汇总
     </a></div>
-      <div class="post-nav-item">
-    <a href="/2023/09/08/JS%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" rel="next" title="JS设计模式">
-      JS设计模式 <i class="fa fa-chevron-right"></i>
-    </a></div>
+      <div class="post-nav-item"></div>
     </div>
       </footer>
     
@@ -291,6 +302,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E7%9A%84%E5%8E%9F%E5%88%99"><span class="nav-number">1.</span> <span class="nav-text">设计模式的原则</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E7%9A%84%E5%88%86%E7%B1%BB"><span class="nav-number">2.</span> <span class="nav-text">设计模式的分类</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8D%95%E4%BE%8B%E6%A8%A1%E5%BC%8F"><span class="nav-number">2.1.</span> <span class="nav-text">单例模式</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 

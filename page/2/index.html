@@ -146,6 +146,181 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2023/08/14/%E6%B5%8F%E8%A7%88%E5%99%A8%E7%9F%A5%E8%AF%86%E7%82%B9/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Wei Tang">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="唐唯的博客">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2023/08/14/%E6%B5%8F%E8%A7%88%E5%99%A8%E7%9F%A5%E8%AF%86%E7%82%B9/" class="post-title-link" itemprop="url">浏览器知识点</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2023-08-14 10:12:26" itemprop="dateCreated datePublished" datetime="2023-08-14T10:12:26+08:00">2023-08-14</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2023-09-08 14:57:00" itemprop="dateModified" datetime="2023-09-08T14:57:00+08:00">2023-09-08</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="从输入url到看到界面的过程"><a href="#从输入url到看到界面的过程" class="headerlink" title="从输入url到看到界面的过程"></a>从输入url到看到界面的过程</h2><ol>
+<li><p>检查缓存</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">如果本地浏览器有本地的静态资源缓存，且未过期，则直接从缓存中读取，而不会发送网络请求。</span><br></pre></td></tr></table></figure></li>
+<li><p>DNS解析</p>
+ <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">将输入的url对应的域名解析成ip，DNS解析过程根据</span><br><span class="line">    本机的hosts文件</span><br><span class="line">    本地DNS缓存</span><br><span class="line">    本地域名服务器</span><br><span class="line">的优先级解析域名。在域名解析过程还可能涉及和顶级域名服务器的交互。</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>发送HTTP请求</p>
+ <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">建立TCP连接，如果是HTTPS还需要建立TLS连接，然后发送HTTP请求，</span><br><span class="line">并接收相应，如果相应状态码为301/302还需要进行重定向。</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>将响应数据提交给渲染进程处理</p>
+ <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">渲染进程解析HTML，在这个过程中，会提前解析外链（link和script）并提前下载。</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>构建DOM</p>
+ <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">将HTML数据转换为DOM。</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>样式计算</p>
+ <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">将CSS转换为CSSOM（document.styleSheets），并使用CSSOM，</span><br><span class="line">根据继承规则和层叠规则， 计算每个DOM节点的具体样式，得到ComputedStyle树。</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>布局</p>
+ <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">根据DOM树和ComputedStyle，计算所有可见元素的坐标，生成一个新的树：布局树。</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>分层</p>
+ <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">根据布局树生成不同的图层，得到分层树(LayerTree)。</span><br></pre></td></tr></table></figure></li>
+<li><p>绘制</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">对每个层生成绘制指令。然后渲染引擎将绘制指令提交给合成线程处理。</span><br></pre></td></tr></table></figure></li>
+<li><p>分块</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">合成线程会先将每个图层分块(tile)，优先渲染视口附近的块。合成线程把tile提供给栅格化线程。</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>栅格化</p>
+ <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"> 栅格化线程把每个块转成位图，并写道显存中。一旦所有图块都被栅格化，</span><br><span class="line">合成线程就会生成一个绘制图块的命令——&quot;DrawQuad&quot;，然后将该命令提交给浏览器进程。</span><br><span class="line">&quot;DrawQuad&quot;是一系列的指令，这些指令引用了显存中的tile位图。</span><br></pre></td></tr></table></figure></li>
+<li><p>合成</p>
+<pre><code>浏览器进程接收到DrawQuad，并用指令将tile合成完整的帧，
+然后调用GPU进程将合成后的帧绘制到屏幕上。
+</code></pre>
+</li>
+</ol>
+<h2 id="浏览器缓存"><a href="#浏览器缓存" class="headerlink" title="浏览器缓存"></a>浏览器缓存</h2><h3 id="1-缓存位置"><a href="#1-缓存位置" class="headerlink" title="1.缓存位置"></a>1.缓存位置</h3><p>从缓存位置上来分有四种，优先级从上到下</p>
+<ol>
+<li><code>Service Worker</code>: 持续性缓存</li>
+<li><code>Memory Cache</code>：读取速度快，缓存持续性短（随着进程释放），可使用空间小</li>
+<li><code>Disk Cache</code>：读取速度慢，胜在容量和时效，根据相应头来判断缓存哪些资源等</li>
+<li><code>Push Cache</code>：HTTP&#x2F;2中的内容，时间短，只在会话中存在</li>
+</ol>
+<p>如果上面四个缓存都没有命中，才会去发网络请求</p>
+<h3 id="2-缓存策略"><a href="#2-缓存策略" class="headerlink" title="2.缓存策略"></a>2.缓存策略</h3><p>缓存策略可以分为<strong>强缓存</strong>和<strong>协商缓存</strong></p>
+<h4 id="强缓存"><a href="#强缓存" class="headerlink" title="强缓存"></a>强缓存</h4><p>强缓存可以通过设置两种<code>HTTP Header</code>来实现，包括：</p>
+<ul>
+<li>Expires<br>为资源设置一个过期时间，如果资源过期了则需要重新请求。<br><strong>缺陷：</strong><br>修改本地时间可能会使缓存失效</li>
+<li>Cache-Control<br>优先级高于Expires。可以在请求头或响应头中设置，并且可以组合使用多种指令。<br><strong>可以设置</strong><br>缓存失效时间、客户端和代理服务器都能缓存等</li>
+</ul>
+<p>强缓存在缓存期间不需要请求，<code>state code</code>为<strong>200</strong></p>
+<h4 id="协商缓存"><a href="#协商缓存" class="headerlink" title="协商缓存"></a>协商缓存</h4><p>如果缓存过期了，就<strong>需要发起请求验证资源是否有更新</strong>。协商缓存可以通过设置两种头实现：<br><code>Last-Modified</code>和<code>ETag</code><br>当浏览器发起请求验证资源时，如果资源没有做改变，那么服务器就会返回304状态码，并且更新浏览器缓存有效期。</p>
+<h2 id="浏览器同源策略"><a href="#浏览器同源策略" class="headerlink" title="浏览器同源策略"></a>浏览器同源策略</h2><p>概念：<strong>源 &#x3D; 协议 + 主机 + 端口</strong>，两个源相同，则为同源；反之为跨源或者跨域。</p>
+<p>同源策略是指，若页面的源和页面运行过程中加载的源不一致时，出于安全考虑，浏览器会对跨域的资源访问进行一些限制。</p>
+<p>解决方案：配置代理、JSONP、CORS</p>
+<h2 id="网络攻击"><a href="#网络攻击" class="headerlink" title="网络攻击"></a>网络攻击</h2><h3 id="CSRF（Cross-site-Request-Forgery）-跨站请求伪造"><a href="#CSRF（Cross-site-Request-Forgery）-跨站请求伪造" class="headerlink" title="CSRF（Cross-site Request Forgery） 跨站请求伪造"></a>CSRF（Cross-site Request Forgery） 跨站请求伪造</h3><p>CSRF 是跨站请求伪造，是一种挟制用户在当前已登录的Web应用上执行非本意的操作的攻击方法</p>
+<p>它首先引导用户访问一个危险网站，当用户访问网站后，网站会发送请求到被攻击的站点，这次请求会携带用户的cookie发送，因此就利用了用户的身份信息完成攻击</p>
+<p>攻击方式：</p>
+<ol>
+<li>使用img的src &#x2F;&#x2F; 无法发Post请求</li>
+<li>使用form的action &#x2F;&#x2F; 可以发Post请求，但用户有感知（页面会跳转）</li>
+<li>iframe的src &#x2F;&#x2F; 用户没有感知</li>
+</ol>
+<p>防御手段：</p>
+<ol>
+<li>不使用cookie &#x2F;&#x2F; 兼容性差 &#x2F;&#x2F; ssr会遇到困难，但是可以解决</li>
+<li>cookie中使用sameSite字段 &#x2F;&#x2F; 兼容性差 &#x2F;&#x2F; 容易挡住自己人</li>
+<li>使用token校验 &#x2F;&#x2F; 如果用户拿到token点到了危险网站，可能会发危险请求并携带token</li>
+<li>服务器检查referer字段 &#x2F;&#x2F; 现在已经很少用，有漏洞 (使用base64不会携带referer)</li>
+</ol>
+<p>扩展： cookie能添加哪些字段？</p>
+<ol>
+<li>sameSite&#x3D;strict &#x2F;&#x2F; 所在的页面必须是相同的站点才能发请求<br>sameSite&#x3D;Lax &#x2F;&#x2F; 由于strict太严格，用Lax则只会限制某些请求，比如Post</li>
+<li>name &#x2F;&#x2F;名称</li>
+<li>value &#x2F;&#x2F;cookie的值</li>
+<li>httponly &#x2F;&#x2F; 如果设为true，则只有http请求会携带cookie</li>
+<li>expires &#x2F; max-age &#x2F;&#x2F; cookie的过期时间，不设置则默认值是session</li>
+<li>secure &#x2F;&#x2F;是否只能通过https来传递cookie</li>
+<li>path &#x2F;&#x2F; 可以访问此cookie的页面路径，如<code>/test</code></li>
+</ol>
+<h3 id="xss-（Cross-site-Scripting）-跨站脚本攻击"><a href="#xss-（Cross-site-Scripting）-跨站脚本攻击" class="headerlink" title="xss （Cross-site Scripting） 跨站脚本攻击"></a>xss （Cross-site Scripting） 跨站脚本攻击</h3><p>攻击者利用站点的漏洞，在表单提交时，在表单内容中加入一些恶意脚本，当其他正常用户浏览页面，而页面中刚好出现攻击者的恶意脚本时，脚本被执行，从而使得页面遭到破坏，或者用户信息被窃取。  </p>
+<p>防御：<br>服务端对用户提交的内容进行过滤或者编码  </p>
+<ul>
+<li>过滤：去掉一些危险的标签，去掉一些危险的属性</li>
+<li>对危险的标签进行HTML实体编码 &#x2F;&#x2F; 比如script标签，让它变成一段String</li>
+</ul>
+<h2 id="requestIdleCallback和requestAnimationFrame的异同"><a href="#requestIdleCallback和requestAnimationFrame的异同" class="headerlink" title="requestIdleCallback和requestAnimationFrame的异同"></a>requestIdleCallback和requestAnimationFrame的异同</h2><p>区别</p>
+<ul>
+<li><code>requestAnimationFrame</code>每次渲染完执行，优先级高</li>
+<li><code>requestIdleCallback</code>空闲时才执行，优先级低</li>
+</ul>
+<p>共同点</p>
+<ul>
+<li>都是宏任务，需要等DOM渲染完后再执行</li>
+</ul>
+<h2 id="script标签的defer和async有什么区别"><a href="#script标签的defer和async有什么区别" class="headerlink" title="script标签的defer和async有什么区别"></a>script标签的defer和async有什么区别</h2><ul>
+<li>script：HTML暂停解析，下载JS，执行JS，在继续解析HTML。</li>
+<li>defer：HTML继续解析，并行下载JS，HTML解析完在执行JS（不用把script放到body后面，我们在head中&lt;script defer&gt;让js脚本并行加载会好点）</li>
+<li>async：HTML继续解析，并行下载JS，执行JS（加载完毕后立即执行），在继续解析HTML</li>
+</ul>
+<h2 id="prefetch和dns-prefetch分别是什么"><a href="#prefetch和dns-prefetch分别是什么" class="headerlink" title="prefetch和dns-prefetch分别是什么"></a>prefetch和dns-prefetch分别是什么</h2><ul>
+<li>preload 资源在当前页面使用，会优先加载</li>
+<li>prefetch 资源在未来页面使用，空闲时加载</li>
+</ul>
+<h2 id="浏览器进程"><a href="#浏览器进程" class="headerlink" title="浏览器进程"></a>浏览器进程</h2><p>浏览器中，最主要的进程有：</p>
+<ol>
+<li>浏览器进程<br>主要负责界面显示、用户交互、子进程管理等。浏览器进程内部会启动多个线程处理不同的任务。</li>
+<li>网络进程<br>负责加载网络资源。网络进程内部会启动多个线程来处理不同的网络任务。</li>
+<li>渲染进程<br>渲染进程启动后，会开启一个<strong>渲染主线程</strong>，主线程负责执行HTML、CSS、JS代码。<br>默认情况下，浏览器会为每个标签页开启一个新的渲染进程，以保证不同的标签页之间不相互影响。</li>
+</ol>
+<p>补充知识： 目前的浏览器想改变这种渲染进程模式，因为每个Tab开一个进程资源消耗太大了。（目前谷歌文档说同一个域名下的网页作为一个进程）</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://example.com/2023/08/14/tangwei/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -275,12 +450,12 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">11</span>
+          <span class="site-state-item-count">12</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-tags">
-        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-count">4</span>
         <span class="site-state-item-name">标签</span>
       </div>
   </nav>
