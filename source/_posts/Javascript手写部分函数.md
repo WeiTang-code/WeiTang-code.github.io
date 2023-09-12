@@ -4,7 +4,7 @@ date: 2023-08-15 10:16:19
 tags:
 ---
 
-## 1. call、apply、bind  
+## call、apply、bind  
 ### call  
 - 核心在于理解this表示该函数，用Symbol()防止命名冲突
 ```javascript
@@ -73,7 +73,7 @@ const tempFn = fn.myBind(obj,1,2)
 tempFn()
 ```
 
-## 2. instanceof  
+## instanceof  
 - 要注意__proto__和prototype的区别
 ```javascript
 function myInstanceOf (instance, target) {
@@ -97,7 +97,7 @@ console.log(myInstanceOf({}, Object));
 console.log(myInstanceOf(function (){}, Function));
 ```
 
-## 3. new  
+## new  
 ```javascript
 function myNew(constuctor, ...args) {
     let newObj = Object.create(constuctor.prototype)
@@ -118,7 +118,7 @@ console.log(p1);
 p1.say();
 ```
 
-## 4. 浅拷贝与深拷贝  
+## 浅拷贝与深拷贝  
 ### 浅拷贝  
 ```javascript
 function shallowCopy(src) {
@@ -176,6 +176,65 @@ function clone(any){
     }
     return any;
 }
+```
+
+## 柯里化  
+### 法一：利用函数的length属性
+要注意function的length属性可以获取该函数还有多少参数待传  
+(给了初始值的参数不算数)
+```javascript
+function curring(fn) {
+    const len = fn.length
+    const allArgs = []
+    return function temp(...args) {
+        allArgs.push(...args)
+        if (allArgs.length < len) {
+            return temp
+        } else {
+            const ans = fn.apply(null, allArgs.slice(0, len))
+            allArgs.splice(0, len)
+            return ans
+        }
+    }
+}
+```
+用例
+```javascript
+function add(a, b, c) {
+    return a + b + c
+}
+
+const cAdd = curring(add)
+console.log(cAdd(1, 2, 3));
+console.log(cAdd(1)(2)(4))
+console.log(cAdd(1))
+console.log(cAdd(1, 2))
+```
+### 法二：利用toString隐式转换
+这里`slice.call()`作复习用，实际上完全可以用`...args`
+```javascript
+function add() {
+    // 将传入的参数转换为数组
+    let args = Array.prototype.slice.call(arguments);
+    
+    // 定义一个函数，接收剩余的参数
+    const fn = function() {
+        return add.apply(null, args.concat(
+            Array.prototype.slice.call(arguments)
+        ));
+    }
+
+    // 转换函数的toString方法，返回计算结果
+    fn.toString = function() {
+        return args.reduce((a, b) => (a + b));
+    }
+    
+    return fn;
+}
+```
+用例
+```javascript
+console.log(add(1)(2)(3) == 6);
 ```
 
 ## 手写Promise  
