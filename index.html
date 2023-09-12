@@ -146,6 +146,116 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2023/09/12/%E7%BD%91%E7%BB%9C%E7%9F%A5%E8%AF%86%E7%82%B9/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Wei Tang">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="唐唯的博客">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2023/09/12/%E7%BD%91%E7%BB%9C%E7%9F%A5%E8%AF%86%E7%82%B9/" class="post-title-link" itemprop="url">网络知识点</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2023-09-12 13:44:24 / 修改时间：14:22:24" itemprop="dateCreated datePublished" datetime="2023-09-12T13:44:24+08:00">2023-09-12</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="TCP与UDP"><a href="#TCP与UDP" class="headerlink" title="TCP与UDP"></a>TCP与UDP</h2><h3 id="TCP与UDP的区别"><a href="#TCP与UDP的区别" class="headerlink" title="TCP与UDP的区别"></a>TCP与UDP的区别</h3><p>简单的说，</p>
+<ul>
+<li>TCP面向连接、速度慢、可靠传输、20字节头</li>
+<li>UDP无连接、速度快、不可靠传输、8字节头</li>
+</ul>
+<ol>
+<li>连接<ul>
+<li>TCP需要建立连接</li>
+<li>UDP无需连接， 即刻传输</li>
+</ul>
+</li>
+<li>服务对象<ul>
+<li>TCP一对一、一条连接只有两个端点</li>
+<li>UDP支持一对一、一对多、多对多的交互通信</li>
+</ul>
+</li>
+<li>可靠性<ul>
+<li>TCP是可靠交付数据的，数据可以无差错、不丢失、不重复、按需到达</li>
+<li>UDP是尽最大努力交付，不保证可靠交付</li>
+</ul>
+</li>
+<li>拥塞控制、流量控制<ul>
+<li>TCP有拥塞控制和流量控制机制，保证数据传输的安全性</li>
+<li>UDP没有这种机制，即使网路拥堵也不影响UDP发送速率</li>
+</ul>
+</li>
+<li>首部开销<ul>
+<li>TCP首部长度较长，会有一定开销，首部在没有使用「选项」字段时是 20 个字节，如果使用了「选项」字段则会变长的。</li>
+<li>UDP首部只有8个字节，且固定不变，开销较小</li>
+</ul>
+</li>
+<li>传输方式<ul>
+<li>TCP是流式传输，没有边界，但保证顺序和可靠</li>
+<li>UDP是一个包一个的发送，是有边界的，但可能会丢包和乱序</li>
+</ul>
+</li>
+<li>分片不同<ul>
+<li>TCP的数据大小如果大于MSS大小，则会在传输层进行分片，目标主机收到后，也同样在传输层组装TCP数据包，如果中途丢失了一个分片，只需要传输丢失的这个分片</li>
+<li>UDP 的数据大小如果大于 MTU 大小，则会在网络层进行分片，目标主机收到后，在网络层组装完数据，接着再传给传输层</li>
+</ul>
+</li>
+</ol>
+<h3 id="TCP与UDP的应用场景"><a href="#TCP与UDP的应用场景" class="headerlink" title="TCP与UDP的应用场景"></a>TCP与UDP的应用场景</h3><p>TCP:HTTP,HTTPS,FTP文件传输<br>UDP：音视频、广播</p>
+<h3 id="TCP是如何保证传输可靠的"><a href="#TCP是如何保证传输可靠的" class="headerlink" title="TCP是如何保证传输可靠的"></a>TCP是如何保证传输可靠的</h3><ol>
+<li>建立连接：通过三次握手建立连接，保证连接实体真实存在  </li>
+<li>序号机制：保证数据是按序、完整到达</li>
+<li>合理分片：TCP会按最大传输单元（MTU）合理分片，接收方会缓存未按序到达的数据，重新排序后交给应用层</li>
+<li>数据校验：TCP报文头有校验和，用于校验报文是否损坏</li>
+<li>超时重传：如果发送一直收不到应答，可能是发送数据丢失，也可能是应答丢失，发送方再等待一段时间后会进行重传</li>
+<li>流量控制：当接收方来不及处理发送方的数据，能通过滑动窗口，提示发送方降低发送的速率，防止包丢失。</li>
+<li>拥塞控制：网络层拥堵造成的拥塞，包括慢启动，拥塞避免，快速重传三种机制。</li>
+</ol>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://example.com/2023/09/08/JS%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -890,71 +1000,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2023/08/14/Ref%E4%B8%8EReactive/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Wei Tang">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="唐唯的博客">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2023/08/14/Ref%E4%B8%8EReactive/" class="post-title-link" itemprop="url">Ref与Reactive</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2023-08-14 14:14:09" itemprop="dateCreated datePublished" datetime="2023-08-14T14:14:09+08:00">2023-08-14</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2023-08-28 11:38:07" itemprop="dateModified" datetime="2023-08-28T11:38:07+08:00">2023-08-28</time>
-              </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="为什么有了Reactive还要提供Ref？"><a href="#为什么有了Reactive还要提供Ref？" class="headerlink" title="为什么有了Reactive还要提供Ref？"></a>为什么有了Reactive还要提供Ref？</h2><p><code>Vue</code>的<code>Reactive</code>和<code>Ref</code>的目的都是创建响应式数据，<code>Reactive</code>作用于引用类型，<code>Ref</code>作用于基本类型。<br><code>Reactive</code>基于<code>Proxy</code>，每次调用都会创建一个新的<code>Proxy</code>对象，而<code>Ref</code>只是对数据简单的提供了get和set，因此基本数据类型使用<code>Ref</code>的开销更小。</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1024,12 +1069,12 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">12</span>
+          <span class="site-state-item-count">13</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-tags">
-        <span class="site-state-item-count">4</span>
+        <span class="site-state-item-count">5</span>
         <span class="site-state-item-name">标签</span>
       </div>
   </nav>

@@ -146,6 +146,71 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2023/08/14/Ref%E4%B8%8EReactive/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Wei Tang">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="唐唯的博客">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2023/08/14/Ref%E4%B8%8EReactive/" class="post-title-link" itemprop="url">Ref与Reactive</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2023-08-14 14:14:09" itemprop="dateCreated datePublished" datetime="2023-08-14T14:14:09+08:00">2023-08-14</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2023-08-28 11:38:07" itemprop="dateModified" datetime="2023-08-28T11:38:07+08:00">2023-08-28</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="为什么有了Reactive还要提供Ref？"><a href="#为什么有了Reactive还要提供Ref？" class="headerlink" title="为什么有了Reactive还要提供Ref？"></a>为什么有了Reactive还要提供Ref？</h2><p><code>Vue</code>的<code>Reactive</code>和<code>Ref</code>的目的都是创建响应式数据，<code>Reactive</code>作用于引用类型，<code>Ref</code>作用于基本类型。<br><code>Reactive</code>基于<code>Proxy</code>，每次调用都会创建一个新的<code>Proxy</code>对象，而<code>Ref</code>只是对数据简单的提供了get和set，因此基本数据类型使用<code>Ref</code>的开销更小。</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://example.com/2023/08/14/%E6%B5%8F%E8%A7%88%E5%99%A8%E7%9F%A5%E8%AF%86%E7%82%B9/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -450,12 +515,12 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">12</span>
+          <span class="site-state-item-count">13</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-tags">
-        <span class="site-state-item-count">4</span>
+        <span class="site-state-item-count">5</span>
         <span class="site-state-item-name">标签</span>
       </div>
   </nav>
