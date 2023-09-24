@@ -146,6 +146,68 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2023/09/24/%E5%B0%81%E8%A3%85%E5%88%86%E6%97%B6%E5%87%BD%E6%95%B0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Wei Tang">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="唐唯的博客">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2023/09/24/%E5%B0%81%E8%A3%85%E5%88%86%E6%97%B6%E5%87%BD%E6%95%B0/" class="post-title-link" itemprop="url">封装分时函数</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2023-09-24 14:12:48 / 修改时间：14:20:56" itemprop="dateCreated datePublished" datetime="2023-09-24T14:12:48+08:00">2023-09-24</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="本文代码来源于分时函数侵删"><a href="#本文代码来源于分时函数侵删" class="headerlink" title="本文代码来源于分时函数侵删"></a>本文代码来源于<a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1qK4y1c7q1/?spm_id_from=333.337.search-card.all.click&vd_source=5a0ad7ce7857957d285555cd8472f9cb">分时函数</a><br>侵删</h2><p>目前有这样一个场景：将一万个数据渲染到页面上，但是直接渲染会导致页面卡顿，如何解决？<br>我们可以使用requestIdleCallback函数，让浏览器在空闲时渲染部分数据。为了确保兼容性，可以封装一个分时函数</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> btn = <span class="variable language_">document</span>.<span class="title function_">querySelector</span>(<span class="string">&#x27;.btn&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">performChunk</span>(<span class="params">datas, consumer, chunkSplitor</span>) &#123;</span><br><span class="line">    <span class="keyword">if</span>(<span class="keyword">typeof</span> datas === <span class="string">&#x27;number&#x27;</span>) &#123;</span><br><span class="line">        datas = <span class="keyword">new</span> <span class="title class_">Array</span>(datas).<span class="title function_">fill</span>(<span class="number">0</span>).<span class="title function_">map</span>(<span class="function">(<span class="params">_, i</span>)=&gt;</span>i)</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span>(!datas.<span class="property">length</span>) <span class="keyword">return</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">let</span> i = <span class="number">0</span></span><br><span class="line">    <span class="keyword">function</span> <span class="title function_">_run</span>(<span class="params"></span>)&#123;</span><br><span class="line">        <span class="keyword">if</span>(i===datas.<span class="property">length</span>) <span class="keyword">return</span></span><br><span class="line">        <span class="title function_">chunkSplitor</span>(<span class="function">(<span class="params">hasTime</span>) =&gt;</span> &#123;</span><br><span class="line">            <span class="keyword">const</span> now = <span class="title class_">Date</span>.<span class="title function_">now</span>()</span><br><span class="line">            <span class="comment">// idle.timeRemaining() &gt; 0 如果是requestIdleCallback就可以直接查询剩余时间</span></span><br><span class="line">            <span class="keyword">while</span>(<span class="title function_">hasTime</span>(<span class="title class_">Date</span>.<span class="title function_">now</span>() - now) &amp;&amp; i&lt;datas.<span class="property">length</span>) &#123;</span><br><span class="line">                <span class="keyword">const</span> item = datas[i]</span><br><span class="line">                <span class="title function_">consumer</span>(item, i)</span><br><span class="line">                i++</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;)</span><br><span class="line">        <span class="title function_">_run</span>()</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="title function_">_run</span>()</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">btn.<span class="property">onclick</span> = <span class="function">() =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">const</span> <span class="title function_">consumer</span> = (<span class="params">item, i</span>) =&gt; &#123;</span><br><span class="line">        <span class="keyword">const</span> div = <span class="variable language_">document</span>.<span class="title function_">createElement</span>(<span class="string">&#x27;div&#x27;</span>)</span><br><span class="line">        div.<span class="property">textContent</span> = item</span><br><span class="line">        <span class="variable language_">document</span>.<span class="property">body</span>.<span class="title function_">appendChild</span>(div)</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">const</span> <span class="title function_">chunkSplitor</span> = (<span class="params">task</span>) =&gt; &#123;</span><br><span class="line">        <span class="built_in">setTimeout</span>(<span class="function">() =&gt;</span> &#123;</span><br><span class="line">            <span class="title function_">task</span>(<span class="function"><span class="params">time</span> =&gt;</span> time &lt;<span class="number">16</span>)</span><br><span class="line">        &#125;, <span class="number">30</span>)</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="title function_">performChunk</span>(<span class="number">100000</span>,consumer, chunkSplitor)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://example.com/2023/09/12/webpack%E7%9F%A5%E8%AF%86%E7%82%B9/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -169,10 +231,16 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-              
 
-              <time title="创建时间：2023-09-12 18:33:54 / 修改时间：18:40:09" itemprop="dateCreated datePublished" datetime="2023-09-12T18:33:54+08:00">2023-09-12</time>
+              <time title="创建时间：2023-09-12 18:33:54" itemprop="dateCreated datePublished" datetime="2023-09-12T18:33:54+08:00">2023-09-12</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2023-09-23 14:07:25" itemprop="dateModified" datetime="2023-09-23T14:07:25+08:00">2023-09-23</time>
+              </span>
 
           
 
@@ -192,6 +260,14 @@
 <li>插件：插件可以用于优化输出、资源管理、注入环境变量等。</li>
 <li>打包和输出：将所有模块及其依赖关系打包成一个或多个捆绑包。</li>
 <li>优化与代码分割：包括代码压缩、模块合并、按需加载等。</li>
+</ol>
+<h2 id="webpack-scope-hoisting"><a href="#webpack-scope-hoisting" class="headerlink" title="webpack scope hoisting"></a>webpack scope hoisting</h2><p>即webpack作用域提升，在开发环境中，webpack会将每一个模块打包为一个函数，而函数会添加执行上下文，并加入执行栈，从而增加运行成本。<br>webpack scope hoisting将不同模块合并在同一个函数下，从而实现作用域提升，提高运行效率，降低打包体积。<br>注意：如果遇到某些模块多次被其他模块引用，或者使用了动态导入的模块，或者非ESM模块，都不会有scope hoisting。</p>
+<h2 id="webpack5新增了哪些变化"><a href="#webpack5新增了哪些变化" class="headerlink" title="webpack5新增了哪些变化"></a>webpack5新增了哪些变化</h2><ol>
+<li>自动清除输出目录，无需使用插件clean-webpack-plugin。</li>
+<li>top-level-await：允许在模块的顶级代码中直接使用await。</li>
+<li>打包体积优化：更智能地处理模块合并、作用域提升、<code>tree shaking</code>等。</li>
+<li>打包缓存开箱即用而无需使用<code>cache-loader</code>插件。（可以用<code>cache</code>配置缓存类型，支持<code>memory</code>、<code>filesystem</code>）</li>
+<li>资源模块：原生支持资源型模块，无需插件（<code>file-loader</code>、<code>url-loader</code>、<code>raw-loader</code>）。</li>
 </ol>
 
       
@@ -235,10 +311,16 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-              
 
-              <time title="创建时间：2023-09-12 13:44:24 / 修改时间：14:22:24" itemprop="dateCreated datePublished" datetime="2023-09-12T13:44:24+08:00">2023-09-12</time>
+              <time title="创建时间：2023-09-12 13:44:24" itemprop="dateCreated datePublished" datetime="2023-09-12T13:44:24+08:00">2023-09-12</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2023-09-23 14:19:04" itemprop="dateModified" datetime="2023-09-23T14:19:04+08:00">2023-09-23</time>
+              </span>
 
           
 
@@ -303,6 +385,12 @@
 <li>流量控制：当接收方来不及处理发送方的数据，能通过滑动窗口，提示发送方降低发送的速率，防止包丢失。</li>
 <li>拥塞控制：网络层拥堵造成的拥塞，包括慢启动，拥塞避免，快速重传三种机制。</li>
 </ol>
+<h2 id="小知识"><a href="#小知识" class="headerlink" title="小知识"></a>小知识</h2><h3 id="常见的默认端口"><a href="#常见的默认端口" class="headerlink" title="常见的默认端口"></a>常见的默认端口</h3><ul>
+<li>HTTP 80</li>
+<li>HTTPS 443</li>
+<li>FTP 21</li>
+<li>SSH 22</li>
+</ul>
 
       
     </div>
@@ -852,75 +940,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2023/08/15/JS%E6%89%8B%E5%86%99%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Wei Tang">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="唐唯的博客">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2023/08/15/JS%E6%89%8B%E5%86%99%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" class="post-title-link" itemprop="url">JS手写设计模式</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2023-08-15 14:55:05" itemprop="dateCreated datePublished" datetime="2023-08-15T14:55:05+08:00">2023-08-15</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2023-09-06 12:46:18" itemprop="dateModified" datetime="2023-09-06T12:46:18+08:00">2023-09-06</time>
-              </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="实现EventBus"><a href="#实现EventBus" class="headerlink" title="实现EventBus"></a>实现EventBus</h2><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">EventBus</span> &#123;</span><br><span class="line">    <span class="title function_">constructor</span>(<span class="params"></span>) &#123;</span><br><span class="line">        <span class="variable language_">this</span>.<span class="property">Events</span> = &#123;&#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 监听事件</span></span><br><span class="line">    <span class="title function_">on</span>(<span class="params">eventName, callback</span>)&#123;</span><br><span class="line">        <span class="keyword">if</span> (!<span class="variable language_">this</span>.<span class="property">Events</span>[eventName]) &#123;</span><br><span class="line">            <span class="variable language_">this</span>.<span class="property">Events</span>[eventName] = <span class="keyword">new</span> <span class="title class_">Set</span>()</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="variable language_">this</span>.<span class="property">Events</span>[eventName].<span class="title function_">add</span>(callback)</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 触发事件</span></span><br><span class="line">    <span class="title function_">emit</span>(<span class="params">eventName, ...args</span>) &#123;</span><br><span class="line">        <span class="keyword">const</span> callbacks = <span class="variable language_">this</span>.<span class="property">Events</span>[eventName]</span><br><span class="line">        <span class="keyword">if</span> (callbacks) &#123;</span><br><span class="line">            callbacks.<span class="title function_">forEach</span>(<span class="function"><span class="params">cb</span> =&gt;</span> cb.<span class="title function_">apply</span>(<span class="variable language_">this</span>, args))</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 移除监听</span></span><br><span class="line">    <span class="title function_">off</span>(<span class="params">eventName, callback</span>) &#123;</span><br><span class="line">        <span class="keyword">const</span> callbacks = <span class="variable language_">this</span>.<span class="property">Events</span>[eventName]</span><br><span class="line">        <span class="keyword">if</span> (callbacks) &#123;</span><br><span class="line">            callbacks.<span class="title function_">delete</span>(callback)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// once 只执行一次</span></span><br><span class="line">    <span class="title function_">once</span>(<span class="params">eventName, callback</span>) &#123;</span><br><span class="line">        <span class="keyword">const</span> <span class="title function_">func</span> = (<span class="params">...args</span>) =&gt; &#123;</span><br><span class="line">            <span class="variable language_">this</span>.<span class="title function_">off</span>(eventName, func)</span><br><span class="line">            callback.<span class="title function_">apply</span>(<span class="variable language_">this</span>, args)</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="variable language_">this</span>.<span class="title function_">on</span>(eventName, func)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>测试用例  </p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 使用示例</span></span><br><span class="line"><span class="keyword">const</span> bus = <span class="keyword">new</span> <span class="title class_">EventBus</span>()</span><br><span class="line"></span><br><span class="line"><span class="comment">// 组件A监听事件</span></span><br><span class="line">bus.<span class="title function_">on</span>(<span class="string">&#x27;foo&#x27;</span>, <span class="function">(<span class="params">name</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;A 接收到:&#x27;</span>, name) </span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line"><span class="comment">// 组件B触发事件</span></span><br><span class="line">bus.<span class="title function_">emit</span>(<span class="string">&#x27;foo&#x27;</span>, <span class="string">&#x27;bar&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">// 组件C监听同一个事件</span></span><br><span class="line">bus.<span class="title function_">on</span>(<span class="string">&#x27;foo&#x27;</span>, <span class="function">(<span class="params">name</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;C 接收到:&#x27;</span>, name)</span><br><span class="line">&#125;) </span><br><span class="line"></span><br><span class="line"><span class="comment">// 此时组件A和C都能接收到事件</span></span><br><span class="line">bus.<span class="title function_">emit</span>(<span class="string">&#x27;foo&#x27;</span>, <span class="string">&#x27;bar&#x27;</span>)</span><br></pre></td></tr></table></figure>
-<h2 id="观察者模式"><a href="#观察者模式" class="headerlink" title="观察者模式"></a>观察者模式</h2><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Observer</span> &#123;</span><br><span class="line">    <span class="title function_">constructor</span>(<span class="params">name</span>) &#123;</span><br><span class="line">        <span class="variable language_">this</span>.<span class="property">name</span> = name</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="title function_">update</span>(<span class="params">ob</span>)&#123;</span><br><span class="line">        <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">`观察者<span class="subst">$&#123;<span class="variable language_">this</span>.name&#125;</span> 收到被观察者<span class="subst">$&#123;ob.name&#125;</span>的通知`</span>)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Observed</span> &#123;</span><br><span class="line">    <span class="title function_">constructor</span>(<span class="params">name</span>) &#123;</span><br><span class="line">        <span class="variable language_">this</span>.<span class="property">name</span> = name</span><br><span class="line">        <span class="variable language_">this</span>.<span class="property">observers</span> = []</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 添加观察者</span></span><br><span class="line">    <span class="title function_">addObserver</span>(<span class="params">observer</span>) &#123;</span><br><span class="line">        <span class="variable language_">this</span>.<span class="property">observers</span>.<span class="title function_">push</span>(observer)</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 删除观察者</span></span><br><span class="line">    <span class="title function_">removeObserver</span>(<span class="params">observer</span>) &#123;</span><br><span class="line">        <span class="variable language_">this</span>.<span class="property">observers</span>.<span class="title function_">splice</span>(<span class="variable language_">this</span>.<span class="property">observers</span>.<span class="title function_">indexOf</span>(observer), <span class="number">1</span>)</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 通知所有观察者</span></span><br><span class="line">    <span class="title function_">notify</span>(<span class="params"></span>) &#123;</span><br><span class="line">        <span class="variable language_">this</span>.<span class="property">observers</span>.<span class="title function_">forEach</span>(<span class="function"><span class="params">observer</span> =&gt;</span> &#123;</span><br><span class="line">            observer.<span class="title function_">update</span>(<span class="variable language_">this</span>)</span><br><span class="line">        &#125;)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>测试用例</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> observed = <span class="keyword">new</span> <span class="title class_">Observed</span>(<span class="string">&#x27;hello&#x27;</span>)</span><br><span class="line"><span class="keyword">const</span> observer0 = <span class="keyword">new</span> <span class="title class_">Observer</span>(<span class="string">&#x27;tw&#x27;</span>)</span><br><span class="line"><span class="keyword">const</span> observer1 = <span class="keyword">new</span> <span class="title class_">Observer</span>(<span class="string">&#x27;ww&#x27;</span>)</span><br><span class="line">observed.<span class="title function_">addObserver</span>(observer0)</span><br><span class="line">observed.<span class="title function_">addObserver</span>(observer1)</span><br><span class="line">observed.<span class="title function_">notify</span>()</span><br><span class="line">observed.<span class="title function_">removeObserver</span>(observer0)</span><br><span class="line">observed.<span class="title function_">notify</span>()</span><br></pre></td></tr></table></figure>
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -990,7 +1009,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">14</span>
+          <span class="site-state-item-count">15</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
