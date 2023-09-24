@@ -146,6 +146,66 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2023/09/24/%E6%B8%85%E9%99%A4%E5%BC%82%E6%AD%A5%E7%9A%84%E4%BC%A0%E6%9F%93%E6%80%A7/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Wei Tang">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="唐唯的博客">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2023/09/24/%E6%B8%85%E9%99%A4%E5%BC%82%E6%AD%A5%E7%9A%84%E4%BC%A0%E6%9F%93%E6%80%A7/" class="post-title-link" itemprop="url">清除异步的传染性</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2023-09-24 17:57:15 / 修改时间：18:05:20" itemprop="dateCreated datePublished" datetime="2023-09-24T17:57:15+08:00">2023-09-24</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>本文代码来源于：<a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1hp4y1A71j/?buvid=XX6505B6A5FE722C352C2CE14820CF8C308CB&is_story_h5=false&mid=CLy7chSW0K5I/KiNt1CySg==&p=1&plat_id=116&share_from=ugc&share_medium=android&share_plat=android&share_session_id=1641ad7f-3dea-48f5-9b72-48c1ec69da5f&share_source=WEIXIN&share_tag=s_i&timestamp=1695447791&unique_k=1SzCR9x&up_id=666759136&vd_source=5a0ad7ce7857957d285555cd8472f9cb">清除异步的传染性</a><br>侵删  </p>
+<p>场景：<br>如何将异步函数改为同步函数的形式，且尽量不改动函数，从而保证函数的纯度<br>思路：<br>使用同步函数来发网络请求，同时抛出一个错误(Promise对象)，在错误处理函数中等待网络请求返回，利用Promise的特性重新执行主函数。<br>扩展：<br>react的<code>Suspense</code>组件就利用了这个方法</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">getUser</span>(<span class="params"></span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="title function_">fetch</span>(<span class="string">&#x27;./1.json&#x27;</span>)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">m1</span>(<span class="params"></span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="title function_">getUser</span>()</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">main</span>(<span class="params"></span>) &#123;</span><br><span class="line">    <span class="keyword">const</span> user = <span class="title function_">m1</span>()</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(user)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">run</span>(<span class="params">func</span>) &#123;</span><br><span class="line">    <span class="keyword">let</span> cache = &#123;</span><br><span class="line">        <span class="attr">status</span>: <span class="string">&#x27;pending&#x27;</span>,</span><br><span class="line">        <span class="attr">value</span>: <span class="literal">null</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">const</span> oldFetch = <span class="variable language_">window</span>.<span class="property">fetch</span></span><br><span class="line">    <span class="variable language_">window</span>.<span class="property">fetch</span> = <span class="keyword">function</span> (<span class="params">...args</span>) &#123;</span><br><span class="line">        <span class="keyword">if</span> (cache.<span class="property">status</span> === <span class="string">&#x27;fulfilled&#x27;</span>) &#123;</span><br><span class="line">            <span class="keyword">return</span> cache.<span class="property">value</span></span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> (cache.<span class="property">status</span> === <span class="string">&#x27;rejected&#x27;</span>) &#123;</span><br><span class="line">            <span class="keyword">throw</span> cache.<span class="property">value</span></span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">const</span> prom = <span class="title function_">oldFetch</span>(...args).<span class="title function_">then</span>(<span class="function"><span class="params">resp</span> =&gt;</span> &#123;</span><br><span class="line">            <span class="keyword">return</span> resp.<span class="title function_">json</span>()</span><br><span class="line">        &#125;).<span class="title function_">then</span>(<span class="function">(<span class="params">res</span>) =&gt;</span> &#123;</span><br><span class="line">            cache.<span class="property">status</span> = <span class="string">&#x27;fulfilled&#x27;</span></span><br><span class="line">            cache.<span class="property">value</span> = res</span><br><span class="line">        &#125;, <span class="function"><span class="params">err</span> =&gt;</span> &#123;</span><br><span class="line">            cache.<span class="property">status</span> = <span class="string">&#x27;rejected&#x27;</span></span><br><span class="line">            cache.<span class="property">value</span> = err</span><br><span class="line">        &#125;)</span><br><span class="line">        <span class="keyword">throw</span> prom</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 执行入口函数</span></span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        <span class="title function_">func</span>()</span><br><span class="line">    &#125; <span class="keyword">catch</span> (err) &#123;</span><br><span class="line">        <span class="keyword">if</span> (err <span class="keyword">instanceof</span> <span class="title class_">Promise</span>) &#123;</span><br><span class="line">            err.<span class="title function_">then</span>(func, func).<span class="title function_">finally</span>(<span class="function">() =&gt;</span> &#123;</span><br><span class="line">                <span class="variable language_">window</span>.<span class="property">fetch</span> = oldFetch</span><br><span class="line">            &#125;)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="title function_">run</span>(main)</span><br></pre></td></tr></table></figure>
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://example.com/2023/09/24/%E5%B0%81%E8%A3%85%E5%88%86%E6%97%B6%E5%87%BD%E6%95%B0/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -171,7 +231,7 @@
               <span class="post-meta-item-text">发表于</span>
               
 
-              <time title="创建时间：2023-09-24 14:12:48 / 修改时间：14:35:36" itemprop="dateCreated datePublished" datetime="2023-09-24T14:12:48+08:00">2023-09-24</time>
+              <time title="创建时间：2023-09-24 14:12:48 / 修改时间：17:59:14" itemprop="dateCreated datePublished" datetime="2023-09-24T14:12:48+08:00">2023-09-24</time>
             </span>
 
           
@@ -185,7 +245,8 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h2 id="本文代码来源于分时函数侵删"><a href="#本文代码来源于分时函数侵删" class="headerlink" title="本文代码来源于分时函数侵删"></a>本文代码来源于<a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1qK4y1c7q1/?spm_id_from=333.337.search-card.all.click&vd_source=5a0ad7ce7857957d285555cd8472f9cb">分时函数</a><br>侵删</h2><p>目前有这样一个场景：将一万个数据渲染到页面上，但是直接渲染会导致页面卡顿，如何解决？<br>我们可以使用requestIdleCallback函数，将任务拆分为多个，让浏览器在空闲时执行一次子任务。为了确保兼容性(比如不是chrome环境)，可以封装一个分时函数</p>
+          <h2 id="本文代码来源于分时函数侵删"><a href="#本文代码来源于分时函数侵删" class="headerlink" title="本文代码来源于分时函数侵删"></a>本文代码来源于<a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1qK4y1c7q1/?spm_id_from=333.337.search-card.all.click&vd_source=5a0ad7ce7857957d285555cd8472f9cb">分时函数</a><br>侵删</h2><p>目前有这样一个场景：将一万个数据渲染到页面上，但是直接渲染会导致页面卡顿，如何解决？   </p>
+<p>我们可以使用requestIdleCallback函数，将任务拆分为多个，让浏览器在空闲时执行一次子任务。为了确保兼容性(比如不是chrome环境)，可以封装一个分时函数</p>
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> btn = <span class="variable language_">document</span>.<span class="title function_">querySelector</span>(<span class="string">&#x27;.btn&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">performChunk</span>(<span class="params">datas, consumer, chunkSplitor</span>) &#123;</span><br><span class="line">    <span class="keyword">if</span>(<span class="keyword">typeof</span> datas === <span class="string">&#x27;number&#x27;</span>) &#123;</span><br><span class="line">        datas = <span class="keyword">new</span> <span class="title class_">Array</span>(datas).<span class="title function_">fill</span>(<span class="number">0</span>).<span class="title function_">map</span>(<span class="function">(<span class="params">_, i</span>)=&gt;</span>i)</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span>(!datas.<span class="property">length</span>) <span class="keyword">return</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">let</span> i = <span class="number">0</span></span><br><span class="line">    <span class="keyword">function</span> <span class="title function_">_run</span>(<span class="params"></span>)&#123;</span><br><span class="line">        <span class="keyword">if</span>(i===datas.<span class="property">length</span>) <span class="keyword">return</span></span><br><span class="line">        <span class="title function_">chunkSplitor</span>(<span class="function">(<span class="params">hasTime</span>) =&gt;</span> &#123;</span><br><span class="line">            <span class="keyword">const</span> now = <span class="title class_">Date</span>.<span class="title function_">now</span>()</span><br><span class="line">            <span class="comment">// idle.timeRemaining() &gt; 0 如果是requestIdleCallback就可以直接查询剩余时间</span></span><br><span class="line">            <span class="keyword">while</span>(<span class="title function_">hasTime</span>(<span class="title class_">Date</span>.<span class="title function_">now</span>() - now) &amp;&amp; i&lt;datas.<span class="property">length</span>) &#123;</span><br><span class="line">                <span class="keyword">const</span> item = datas[i]</span><br><span class="line">                <span class="title function_">consumer</span>(item, i)</span><br><span class="line">                i++</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="title function_">_run</span>()</span><br><span class="line">        &#125;)</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="title function_">_run</span>()</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">btn.<span class="property">onclick</span> = <span class="function">() =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">const</span> <span class="title function_">consumer</span> = (<span class="params">item, i</span>) =&gt; &#123;</span><br><span class="line">        <span class="keyword">const</span> div = <span class="variable language_">document</span>.<span class="title function_">createElement</span>(<span class="string">&#x27;div&#x27;</span>)</span><br><span class="line">        div.<span class="property">textContent</span> = item</span><br><span class="line">        <span class="variable language_">document</span>.<span class="property">body</span>.<span class="title function_">appendChild</span>(div)</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">const</span> <span class="title function_">chunkSplitor</span> = (<span class="params">task</span>) =&gt; &#123;</span><br><span class="line">        <span class="built_in">setTimeout</span>(<span class="function">() =&gt;</span> &#123;</span><br><span class="line">            <span class="title function_">task</span>(<span class="function"><span class="params">time</span> =&gt;</span> time &lt;<span class="number">16</span>)</span><br><span class="line">        &#125;, <span class="number">30</span>)</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="title function_">performChunk</span>(<span class="number">100000</span>,consumer, chunkSplitor)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 
@@ -867,79 +928,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2023/08/16/JS%E7%9A%84%E6%89%A7%E8%A1%8C%E9%A1%BA%E5%BA%8F/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Wei Tang">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="唐唯的博客">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2023/08/16/JS%E7%9A%84%E6%89%A7%E8%A1%8C%E9%A1%BA%E5%BA%8F/" class="post-title-link" itemprop="url">JS的执行顺序</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2023-08-16 11:14:47" itemprop="dateCreated datePublished" datetime="2023-08-16T11:14:47+08:00">2023-08-16</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2023-08-28 11:38:07" itemprop="dateModified" datetime="2023-08-28T11:38:07+08:00">2023-08-28</time>
-              </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>JS的执行顺序问题其实非常简单，只需要理解清楚JS的EventLoop（事件循环机制），并捋清楚一个代码中哪些是宏任务，哪些是微任务即可。<br>EventLoop：<br>首先将整个JS代码作为一个宏任务</p>
-<ul>
-<li>执行一个宏任务</li>
-<li>执行微任务队列中所有的微任务</li>
-</ul>
-<p>循环往复  </p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="number">1</span>)</span><br><span class="line"><span class="built_in">setTimeout</span>(<span class="function">()=&gt;</span>&#123;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="number">2</span>)</span><br><span class="line">    <span class="title class_">Promise</span>.<span class="title function_">resolve</span>().<span class="title function_">then</span>(<span class="function">()=&gt;</span>&#123;</span><br><span class="line">        <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="number">3</span>)</span><br><span class="line">    &#125;)</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line"><span class="built_in">setTimeout</span>(<span class="function">()=&gt;</span>&#123;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="number">4</span>)</span><br><span class="line">    <span class="title class_">Promise</span>.<span class="title function_">resolve</span>().<span class="title function_">then</span>(<span class="function">()=&gt;</span>&#123;</span><br><span class="line">        <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="number">5</span>)</span><br><span class="line">    &#125;)</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="number">6</span>)</span><br></pre></td></tr></table></figure>
-
-<p>上述代码的执行顺序为<br>162345</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1009,7 +997,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">15</span>
+          <span class="site-state-item-count">16</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
