@@ -146,6 +146,123 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2023/09/25/%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96%E6%B1%87%E6%80%BB/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Wei Tang">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="唐唯的博客">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2023/09/25/%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96%E6%B1%87%E6%80%BB/" class="post-title-link" itemprop="url">性能优化汇总</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2023-09-25 16:02:08 / 修改时间：16:47:51" itemprop="dateCreated datePublished" datetime="2023-09-25T16:02:08+08:00">2023-09-25</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="1-编码优化"><a href="#1-编码优化" class="headerlink" title="1. 编码优化"></a>1. 编码优化</h2><ol>
+<li>数据读取速度<ul>
+<li>字面量和局部变量访问速度快，数组元素和对象成员相对较慢</li>
+<li>变量从局部作用域到全局作用域的搜索过程越长速度越慢</li>
+<li>对象嵌套的越深，读取速度就越慢</li>
+<li>对象在原型链中存在的位置越深，找到它的速度就越慢<br><code>可以选择缓存对象成员值，使用局部变量，加快访问速度</code></li>
+</ul>
+</li>
+<li>DOM<ul>
+<li>尽可能减少访问DOM的次数（缓存DOM属性和元素）</li>
+<li>减少重排与重绘（先让元素脱离文档流，处理完毕后再让元素回归文档流）</li>
+<li>善于使用事件委托</li>
+</ul>
+</li>
+<li>流程控制<ul>
+<li>避免使用for…in（它能枚举到原型，所以很慢）</li>
+<li>JS倒叙循环能略微提升性能</li>
+<li>迭代比递归更快</li>
+<li>Map表代替大量的if-else会提升性能</li>
+</ul>
+</li>
+</ol>
+<h2 id="2-静态资源优化"><a href="#2-静态资源优化" class="headerlink" title="2. 静态资源优化"></a>2. 静态资源优化</h2><ol>
+<li>压缩-解压纯文本</li>
+<li>图片优化<ul>
+<li>响应式图片</li>
+<li>CSS精灵图</li>
+</ul>
+</li>
+</ol>
+<h2 id="3-交付优化"><a href="#3-交付优化" class="headerlink" title="3. 交付优化"></a>3. 交付优化</h2><ol>
+<li>异步加载JS（使用defer或者async标签）</li>
+<li>懒加载<ul>
+<li>图片等资源（JS事件触发、Intersection Observer）</li>
+<li>先加载低质量图片，当图片加载完毕后再使用完整图片替换它</li>
+</ul>
+</li>
+<li>优先加载关键CSS<br>可以将首屏渲染的CSS内嵌到head标签中，剩余CSS使用异步加载</li>
+<li>资源提示<br>提前下载或者解析可能需要的资源（如dns-prefetch：提示浏览器尽早解析该资源）<br><code>&lt;link rel=&quot;dns-prefetch&quot; href=&quot;//example.com&quot;&gt;</code></li>
+<li>PreLoad<br>预获取资源，高优先级，不阻塞渲染</li>
+<li>用户界面快速响应  <ul>
+<li>可以添加一些Loading过度界面提升用户体验</li>
+<li>拆分子任务并异步执行</li>
+</ul>
+</li>
+</ol>
+<h2 id="4-构建优化"><a href="#4-构建优化" class="headerlink" title="4. 构建优化"></a>4. 构建优化</h2><ol>
+<li>使用预编译</li>
+<li>清除无用代码，减少打包体积</li>
+<li>服务端渲染（SSR）</li>
+<li>import动态导入</li>
+<li>使用HTTP缓存头</li>
+</ol>
+<h2 id="5-其他"><a href="#5-其他" class="headerlink" title="5. 其他"></a>5. 其他</h2><ul>
+<li>HTTP2.0</li>
+<li>CDN</li>
+<li>优化字体</li>
+</ul>
+<h2 id="6-性能监控"><a href="#6-性能监控" class="headerlink" title="6. 性能监控"></a>6. 性能监控</h2><p>使用检测工具持续监视网站性能</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://example.com/2023/09/24/%E5%B9%B6%E5%8F%91%E9%98%9F%E5%88%97/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -643,7 +760,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2023-09-12 18:44:00" itemprop="dateModified" datetime="2023-09-12T18:44:00+08:00">2023-09-12</time>
+                <time title="修改时间：2023-09-25 15:48:39" itemprop="dateModified" datetime="2023-09-25T15:48:39+08:00">2023-09-25</time>
               </span>
 
           
@@ -666,6 +783,18 @@
 <li>Vue-Router的history模式是通过html5的新特性，pushState()和replaceState()来实现的，可以改变url且不会发送请求。replaceState()可以读取历史记录栈，还可以对浏览器记录进行修改。</li>
 <li>innerHTML修改DOM节点是比createElement效率要低的，因为innerHTML需要解析的是一个字符串，而createElement相当于修改DOM树，效率更高。</li>
 <li>垃圾回收算法有哪些：标记-清除算法、引用计数算法、分代回收算法。</li>
+<li>基本数据类型和引用数据类型：<br>基本数据类型在内存中占据固定大小，保存在栈内存中。  </li>
+<li>基本数据类型在内存中占据固定大小，保存在栈内存中。引用数据类型<br>引用数据类型的值是对象，保存在堆内存中，在栈内存中存储的是变量标识符以及对象在堆内存中的存储地址。</li>
+<li>Nginx和Apache：<br>Nginx：轻量级、低消耗、高性能、异步非阻塞、抗并发、反向代理，且处理静态文件比Apache好。<br>Apache：Apache的rewrite更强大，生态好，发展成熟，稳定bug少。</li>
+<li>CSS3动画的优缺点：<br>优点：性能更好、代码相对简单<br>缺点：在动画控制上不够灵活、兼容性不好、部分动画无法实现</li>
+<li>Vue中的data为什么是一个函数  <ul>
+<li>Vue组件是用来复用的，而data需要相互隔离，引用类型会导致原始数据受到影响。</li>
+<li>支持通过this设置实例属性</li>
+<li>每次复用可以重新返回一份新的data，拥有自己的作用域</li>
+</ul>
+</li>
+<li>MutationObserver(): 能够监听DOM树，在指定的DOM发生变化时调用回调。</li>
+<li>Vue的Compile(指令解析器)：<br>Compile主要做的事情是解析模板指令，将模板中变量替换为数据，初始化渲染页面视图。并将每个指令对应的节点绑定更新函数，添加订阅者，一旦数据有变动，收到通知，更新函数。</li>
 </ol>
 
       
@@ -833,78 +962,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2023/08/17/vue-vite-typescript%E5%9C%A8ide%E4%B8%AD%E6%8A%A5%E9%94%99%E7%9A%84%E9%97%AE%E9%A2%98/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Wei Tang">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="唐唯的博客">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2023/08/17/vue-vite-typescript%E5%9C%A8ide%E4%B8%AD%E6%8A%A5%E9%94%99%E7%9A%84%E9%97%AE%E9%A2%98/" class="post-title-link" itemprop="url">vue+vite+typescript在ide中报错的问题</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2023-08-17 14:08:26" itemprop="dateCreated datePublished" datetime="2023-08-17T14:08:26+08:00">2023-08-17</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2023-08-28 11:38:07" itemprop="dateModified" datetime="2023-08-28T11:38:07+08:00">2023-08-28</time>
-              </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>用脚手架创建Vue+vite+ts项目后，在IDE中可能会出现报错的情况，主要是ts导致的一些问题，例如ts只能解析<code>.ts</code>文件，不能解析<code>.vue</code>文件，需要进行一些配置。  </p>
-<h2 id="1-路径配置"><a href="#1-路径配置" class="headerlink" title="1.路径配置"></a>1.路径配置</h2><p>vite.config.js</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="attr">resolve</span>: &#123;</span><br><span class="line">    <span class="attr">alias</span>: &#123;</span><br><span class="line">      <span class="string">&#x27;@&#x27;</span>: <span class="title function_">fileURLToPath</span>(<span class="keyword">new</span> <span class="title function_">URL</span>(<span class="string">&#x27;./src&#x27;</span>, <span class="keyword">import</span>.<span class="property">meta</span>.<span class="property">url</span>))</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>ts.config.json</p>
-<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;extends&quot;</span><span class="punctuation">:</span> <span class="string">&quot;@vue/tsconfig/tsconfig.dom.json&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;include&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span><span class="string">&quot;env.d.ts&quot;</span><span class="punctuation">,</span> <span class="string">&quot;src/**/*&quot;</span><span class="punctuation">,</span> <span class="string">&quot;src/**/*.vue&quot;</span><span class="punctuation">]</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;exclude&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span><span class="string">&quot;src/**/__tests__/*&quot;</span><span class="punctuation">]</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;compilerOptions&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;composite&quot;</span><span class="punctuation">:</span> <span class="literal"><span class="keyword">true</span></span><span class="punctuation">,</span></span><br><span class="line">        <span class="attr">&quot;baseUrl&quot;</span><span class="punctuation">:</span> <span class="string">&quot;./&quot;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="attr">&quot;paths&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">        <span class="attr">&quot;@/*&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span><span class="string">&quot;./src/*&quot;</span><span class="punctuation">]</span></span><br><span class="line">    <span class="punctuation">&#125;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
-
-<h2 id="2-声明模块"><a href="#2-声明模块" class="headerlink" title="2. 声明模块"></a>2. 声明模块</h2><p>env.d.ts  </p>
-<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">declare</span> <span class="variable language_">module</span> <span class="string">&quot;vue-router&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">declare</span> <span class="variable language_">module</span> <span class="string">&#x27;*.vue&#x27;</span> &#123;</span><br><span class="line">    <span class="keyword">import</span> &#123; <span class="title class_">DefineComponent</span> &#125; <span class="keyword">from</span> <span class="string">&quot;vue&quot;</span></span><br><span class="line">    <span class="keyword">const</span> <span class="attr">component</span>: <span class="title class_">DefineComponent</span>&lt;&#123;&#125;, &#123;&#125;, <span class="built_in">any</span>&gt;</span><br><span class="line">    <span class="keyword">export</span> <span class="keyword">default</span> component</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -979,7 +1036,7 @@
         </a>
       </div>
       <div class="site-state-item site-state-tags">
-        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-count">7</span>
         <span class="site-state-item-name">标签</span>
       </div>
   </nav>
